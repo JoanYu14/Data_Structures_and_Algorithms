@@ -12,21 +12,23 @@
 //  排序過程的時間複雜度為 O(nlogn)。
 
 // 需要製作3個Function
-// 1. buildMaxHeap() => 用來將無序Array變成MAX HEAP，會去呼叫maxHeapify(i)
-// 2. maxHeapify(i) => 參數i為subtree的root node index，用來跟child node比較是否要swap，若是swap了還要繼續遞迴執行maxHeapify確認互換後再跟child node比較
+// 1. buildMaxHeap() => 用來將無序Array變成MAX HEAP，會去呼叫maxHeapify(rootNodeIndex)
+// 2. maxHeapify(rootNodeIndex) => 參數rootNodeIndex為subtree的root node index，用來跟child node比較是否要swap，若是swap了還要繼續遞迴執行maxHeapify確認互換後再跟child node比較
 // 3. heapSort() => 此function第一件事就是呼叫buildMaxHeap()來將Array變成MAX HEAP，然後將index 0(max heap中最大值(root node))與max heap最後一個element做互換，然後再對新的index0做heapify
 
-// i為目前這個subtree的root node的index
-const maxHeapify = function (i) {
-  console.log(`目前Subtree的index:${i}, value:${arr[i]}`);
-  // parent node的left與right分別會是i*2+1與i*2+2
-  let left = i * 2 + 1;
-  let right = i * 2 + 2;
+// rootNodeIndex為目前這個subtree的root node的index
+const maxHeapify = function (rootNodeIndex) {
+  console.log(
+    `目前Subtree的index:${rootNodeIndex}, value:${arr[rootNodeIndex]}`
+  );
+  // root node的left與right分別會是i*2+1與i*2+2
+  let left = rootNodeIndex * 2 + 1;
+  let right = rootNodeIndex * 2 + 2;
   console.log(
     `這個Subtree的left node為{index:${left}, value:${arr[left]}}; right node為{index:${right}, value:${arr[right]}}`
   );
-  // largest紀錄這個subtree中max value的index (i or left or right)，目前預設為i
-  let largest = i;
+  // largest紀錄這個subtree中max value的index (rootNodeIndex or left or right)，目前預設為i
+  let largest = rootNodeIndex;
   // 若left>heapSize-1的話代表left node並不存在，i並沒有child node(因為在heap sort的過程會先取出right node所以其實沒有left node的話也不會有right node)
   // 若arr[largest] 小於 arr[left]的話largest要變成left這個index
   // heapSize是global variable
@@ -44,23 +46,23 @@ const maxHeapify = function (i) {
     );
     largest = right;
   }
-  // 如果largest不為i的話代表有child node比parent node大，那就要swap(往下換)
-  if (largest != i) {
+  // 如果largest不為rootNodeIndex的話代表有child node比root node大，那就要swap(往下換)
+  if (largest != rootNodeIndex) {
     console.log(
-      `原本的parent node為{index:${i}, value:${arr[i]}}，比child node{index:${largest}, value:${arr[largest]}}小，所以要互換`
+      `原本的root node為{index:${rootNodeIndex}, value:${arr[rootNodeIndex]}}，比child node{index:${largest}, value:${arr[largest]}}小，所以要互換`
     );
     console.log("--------------------------------------");
 
-    let temp = arr[i];
+    let temp = arr[rootNodeIndex];
     // parent node這個index的value要換成arr[largest]，largest index有可能是left node OR right node的index
-    arr[i] = arr[largest];
+    arr[rootNodeIndex] = arr[largest];
     arr[largest] = temp;
     // 此時largest這個index是原本的left or right node的index，因為已經與原本subtree的最大值互換了，所以要再去確認這個value是否有比child node的value大
     // 也就是要再遞迴地去做maxHeapify，直到為subtree的最大值或是已經往下堆到下面沒有child node了
     maxHeapify(largest);
   } else {
     console.log(
-      `原本的parent node為{index:${i}, value:${arr[i]}}就是substree中最大的`
+      `原本的root node為{index:${rootNodeIndex}, value:${arr[rootNodeIndex]}}就是substree中最大的`
     );
     console.log("--------------------------------------");
   }
@@ -68,9 +70,13 @@ const maxHeapify = function (i) {
 
 const buildMaxHeap = function () {
   // heapSize為heap的element數量
-  // i的初始值為Math.floor(heapSize/2)-1是因為binary tree中最後一個subtree(右下角)的root node剛好會是Math.floor(heapSize/2)-1
-  for (let i = Math.floor(heapSize / 2) - 1; i >= 0; i--) {
-    maxHeapify(i);
+  // rootNodeIndex的初始值為Math.floor(heapSize/2)-1是因為binary tree中最後一個subtree(右下角)的root node剛好會是Math.floor(heapSize/2)-1
+  for (
+    let rootNodeIndex = Math.floor(heapSize / 2) - 1;
+    rootNodeIndex >= 0;
+    rootNodeIndex--
+  ) {
+    maxHeapify(rootNodeIndex);
   }
   console.log(`Max Heap為:[${arr}]`);
   console.log("=============================");
