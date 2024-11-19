@@ -29,7 +29,7 @@ const maxHeapify = function (rootNodeIndex) {
   );
   // largest紀錄這個subtree中max value的index (rootNodeIndex or left or right)，目前預設為i
   let largest = rootNodeIndex;
-  // 若left>heapSize-1的話代表left node並不存在，i並沒有child node(因為在heap sort的過程會先取出right node所以其實沒有left node的話也不會有right node)
+  // 若left>heapSize-1的話代表left node並不存在，rootNodeIndex並沒有child node(因為在heap sort的過程會先取出right node所以其實沒有left node的話也不會有right node)
   // 若arr[largest] 小於 arr[left]的話largest要變成left這個index
   // heapSize是global variable
   if (left <= heapSize - 1 && arr[largest] < arr[left]) {
@@ -39,7 +39,7 @@ const maxHeapify = function (rootNodeIndex) {
 
     largest = left;
   }
-  // 若arr[largest] 小於 arr[right]的話largest要變成right這個index，這樣就執行完parent node與left right兩個child node的比較了
+  // 若arr[largest] 小於 arr[right]的話largest要變成right這個index，這樣就執行完node node與left right兩個child node的比較了
   if (right <= heapSize - 1 && arr[largest] < arr[right]) {
     console.log(
       `原本的largest為{index:${largest}, value${arr[largest]}} < right{index:${right}, value:${arr[right]}}，所以largest變成right index`
@@ -54,7 +54,7 @@ const maxHeapify = function (rootNodeIndex) {
     console.log("--------------------------------------");
 
     let temp = arr[rootNodeIndex];
-    // parent node這個index的value要換成arr[largest]，largest index有可能是left node OR right node的index
+    // root node這個index的value要換成arr[largest]，largest index有可能是left node OR right node的index
     arr[rootNodeIndex] = arr[largest];
     arr[largest] = temp;
     // 此時largest這個index是原本的left or right node的index，因為已經與原本subtree的最大值互換了，所以要再去確認這個value是否有比child node的value大
@@ -93,12 +93,12 @@ const heapSort = function () {
     arr[0] = arr[i];
     arr[i] = temp;
     console.log(`index:${i}為${arr[i]}，為倒數第${arr.length - i}大的value`);
-    // 將heapSize減1(去掉最後一個element，因為最後一個是已經排好了，heapify要將這個element排除在外略過)
+    // 此時heap的最後一個index就排序好了，所以下一次做heapify的時候要忽略這個nodex => heap的範圍縮小1 => heapSize-1
     heapSize--;
     console.log(`目前的arr為[${arr}]`);
     console.log(`目前的heap為[${arr.slice(0, heapSize)}]`);
     console.log("++++++++++++++++++++ 進行maxHeapify ++++++++++++++++++++++");
-    // 因為原本最後一個element與root互換了，所以要再對root index(0)做heapify，往下換到正確的地方
+    // 因為原本最後一個element與root互換了，root node此時不是max value了，所以要在對root index做maxHeapify將它移動到正確的位置
     maxHeapify(0);
     console.log("++++++++++++++++++++ 進行完maxHeapify ++++++++++++++++++++++");
     console.log(`再次進行maxHeapify後為[${arr.slice(0, heapSize)}]`);
