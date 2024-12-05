@@ -1,3 +1,13 @@
+// Binary Search Tree (二元搜尋樹BST)
+// Binary Search Tree 二元搜尋樹 : 是一棵二元樹，但left child總是小於root(left<root)，right child總是大於root(right>root)。right>root<left
+// 在 BST 中，每個節點的左子樹包含比該節點小的值，而右子樹包含比該節點大的值。這種結構使得在查找某個元素時，可以比線性搜尋更快速。
+// 對於一顆平衡的二叉搜尋樹，搜尋的時間複雜度是 O(log n)，其中 n 是樹中的節點數。這比起線性搜尋（O(n)）要快得多，尤其是當數據量較大時。
+
+// Binary Search Tree做search的時間複雜度
+// Worst Case O(n): 就是這個樹是線性的，那其實我們就是在做sequential search線性查詢
+// Best Case O(1): 就是要找的值剛好是rootNode
+// Average Case O(logn): Binary Tree是balanced的
+
 //TreeNode定義
 class TreeNode {
   constructor(val) {
