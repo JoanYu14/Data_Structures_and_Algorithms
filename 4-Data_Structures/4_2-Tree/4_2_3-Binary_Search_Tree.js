@@ -25,35 +25,35 @@ class BinarySearchTree {
 
   insert(value) {
     let node = new TreeNode(value);
-    // 定義y為null，該變數會儲存著最後比較到哪個Node
-    let y = null;
-    // 定義x為root，該變數會用做while loop是否繼續的依據，在loop最後會更新為目前Node的left or right代表下次迴圈要比較哪個Node，在迴圈結束時一定會為null
-    let x = this.root;
-    // 如果x一開始就=null的話代表該Tree中沒有Node
-    while (x !== null) {
-      // y要存入x(當前比較到哪個Node)
-      y = x;
+    // 定義lastComparedNode為null，該變數會儲存著最後比較到哪個Node
+    let lastComparedNode = null;
+    // 定義nodeToCompare為root，該變數會用做while loop是否繼續的依據，在loop最後會更新為目前Node的left or right代表下次迴圈要比較哪個Node，在迴圈結束時一定會為null
+    let nodeToCompare = this.root;
+    // 如果nodeToCompare一開始就=null的話代表該Tree中沒有Node
+    while (nodeToCompare !== null) {
+      // lastComparedNode要存入nodeToCompare(當前比較到哪個Node)
+      lastComparedNode = nodeToCompare;
       // 用要insert的Node去跟目前比較到的Node做比較
       // 若大於的話下次就要跟目前node的right child比較(x=x.right)
       // 否則下次就要跟目前node的left child比較(x=x.left)
-      if (node.val > y.val) {
-        x = x.right;
+      if (node.val > nodeToCompare.val) {
+        nodeToCompare = nodeToCompare.right;
       } else {
-        x = x.left;
+        nodeToCompare = nodeToCompare.left;
       }
     }
 
     // 此時比較完了，x一定為null了
-    // y此時為最後比較到的Node如果y=null的話代表while loop根本沒有執行，因為Tree中根本沒有Node
-    if (y === null) {
+    // lastComparedNode此時為最後比較到的Node如果lastComparedNode=null的話代表while loop根本沒有執行，因為Tree中根本沒有Node
+    if (lastComparedNode === null) {
       console.log("BinaryTree中原本完全沒有Node");
       this.root = node;
-    } else if (node.val > y.val) {
-      console.log(`${node.val}要insert到${y.val}的right`);
-      y.right = node;
+    } else if (node.val > lastComparedNode.val) {
+      console.log(`${node.val}要insert到${lastComparedNode.val}的right`);
+      lastComparedNode.right = node;
     } else {
-      console.log(`${node.val}要insert到${y.val}的left`);
-      y.left = node;
+      console.log(`${node.val}要insert到${lastComparedNode.val}的left`);
+      lastComparedNode.left = node;
     }
 
     this.length++;
