@@ -38,6 +38,9 @@ const floydWarshallAlgorithm = function (graph) {
       startVertexIndex < graph.vertices.length;
       startVertexIndex++
     ) {
+      console.log(
+        `------------------- 開始點:${graph.vertices[startVertexIndex]}~中繼點:${graph.vertices[intermediateVertexIndex]}開始 -------------------`
+      );
       // graph.vertices[startVertexIndex]是終點
       for (
         let endVertexIndex = 0;
